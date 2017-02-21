@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chan.info.dao.GetRoleAndPerDao">
+	<select id="getRoleByUsername" parameterType="String"
+		resultType="java.util.Map">
+		SELECT
+			r.role 
+		FROM
+			user_info u
+		LEFT JOIN sys_user_role ur ON u.uid = ur.uid
+		LEFT JOIN sys_role r ON ur.role_id = r.id
+		WHERE u.username=#{value}
+	</select>
+	
+	<select id="getPermissionByUsername" parameterType="String"
+		resultType="java.util.Map">
+		SELECT
+		  DISTINCT(p.permission)
+		FROM
+			user_info u
+		LEFT JOIN sys_user_role ur ON u.uid = ur.uid
+		LEFT JOIN sys_role r ON ur.role_id = r.id
+		LEFT JOIN sys_role_permission rp ON rp.role_id = r.id
+		LEFT JOIN sys_permission p ON rp.permission_id = p.id 
+		WHERE u.username=#{value}
+	</select>
+</mapper>
